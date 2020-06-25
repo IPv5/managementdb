@@ -19,6 +19,7 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     //Start prompt function here
+    runSearch();
 })
 
 function runSearch() {
@@ -28,33 +29,23 @@ function runSearch() {
             type: "rawlist",
             message: "What would you like to do?",
             choices: [
-                "Find songs by artist",
-                "Find all artists who appear more than once",
-                "Find data within a specific range",
-                "Search for a specific song",
-                "Find artists with a top song and top album in the same year"
+                "Add department, roles and employees",
+                "View departments, roles and employees",
+                "Update employee roles"
             ]
         })
         .then(function(answer) {
             switch (answer.action) {
-                case "Find songs by artist":
-                    artistSearch();
+                case "Add department, roles and employees":
+                    addEmployeeInformation();
                     break;
 
-                case "Find all artists who appear more than once":
-                    multiSearch();
+                case "View departments, roles and employees":
+                    viewEmployeeInformation();
                     break;
 
-                case "Find data within a specific range":
-                    rangeSearch();
-                    break;
-
-                case "Search for a specific song":
-                    songSearch();
-                    break;
-
-                case "Find artists with a top song and top album in the same year":
-                    songAndAlbumSearch();
+                case "Update employee roles":
+                    updateEmployeeInfo();
                     break;
             }
         });
@@ -133,28 +124,42 @@ function rangeSearch() {
         });
 }
 
-function songSearch() {
+function viewEmployeeInformation() {
     inquirer
         .prompt({
-            name: "song",
-            type: "input",
-            message: "What song would you like to look for?"
+            name: "infoChoice",
+            type: "rawlist",
+            message: "What would you like to do?",
+            choices: [
+                "View departments",
+                "View roles",
+                "View employees"
+            ]
         })
-        .then(function(answer) {
-            console.log(answer.song);
-            connection.query("SELECT * FROM top5000 WHERE ?", { song: answer.song }, function(err, res) {
-                console.log(
-                    "Position: " +
-                    res[0].position +
-                    " || Song: " +
-                    res[0].song +
-                    " || Artist: " +
-                    res[0].artist +
-                    " || Year: " +
-                    res[0].year
-                );
-                runSearch();
-            });
+        .then(answer => {
+            console.log(answer.infoChoice);
+            switch (answer.infoChoice) {
+                case "View departments":
+                    inquirer.prompt({
+                            type: "input",
+                            name: "specificDepartment",
+                            message: "What department?"
+                        }).then(answer => {
+                            console.log(answer.specificDepartment);
+                        })
+                        // console.log(answer.specificDepartment);
+                        // connection.query("SELECT * FROM top5000 WHERE ?", { department: answer.specificDepartment }, function(err, res) {
+                        //     console.log();
+                        //     runSearch();
+                        // });
+                    break;
+                case "View roles":
+
+                    break;
+                case "View employees":
+
+                    break;
+            }
         });
 }
 
