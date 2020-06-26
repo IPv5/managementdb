@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-
+const viewing = require("./js/viewing");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -41,7 +41,7 @@ function runSearch() {
                     break;
 
                 case "View departments, roles and employees":
-                    viewEmployeeInformation();
+                    viewing.viewEmployeeInformation();
                     break;
 
                 case "Update employee roles":
@@ -124,44 +124,6 @@ function rangeSearch() {
         });
 }
 
-function viewEmployeeInformation() {
-    inquirer
-        .prompt({
-            name: "infoChoice",
-            type: "rawlist",
-            message: "What would you like to do?",
-            choices: [
-                "View departments",
-                "View roles",
-                "View employees"
-            ]
-        })
-        .then(answer => {
-            console.log(answer.infoChoice);
-            switch (answer.infoChoice) {
-                case "View departments":
-                    inquirer.prompt({
-                            type: "input",
-                            name: "specificDepartment",
-                            message: "What department?"
-                        }).then(answer => {
-                            console.log(answer.specificDepartment);
-                        })
-                        // console.log(answer.specificDepartment);
-                        // connection.query("SELECT * FROM top5000 WHERE ?", { department: answer.specificDepartment }, function(err, res) {
-                        //     console.log();
-                        //     runSearch();
-                        // });
-                    break;
-                case "View roles":
-
-                    break;
-                case "View employees":
-
-                    break;
-            }
-        });
-}
 
 function songAndAlbumSearch() {
     inquirer
@@ -197,3 +159,6 @@ function songAndAlbumSearch() {
             });
         });
 }
+
+
+module.exports.runSearch = runSearch;
