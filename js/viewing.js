@@ -1,82 +1,88 @@
 const inquirer = require("inquirer");
 const main = require("../main");
 
-function viewEmployeeInformation() {
+function addEmployeeInformation() {
     inquirer
-        .prompt([{
+        .prompt({
             name: "infoChoice",
-            type: "list",
+            type: "rawlist",
             message: "What would you like to do?",
-            choices: () => {
-                return [
-                    "View departments",
-                    "View roles",
-                    "View employees"
-                ]
-            }
-        }])
+            choices: [
+                "Add departments",
+                "Add roles",
+                "Add employees"
+            ]
+        })
         .then(answer => {
             // console.log(answer.infoChoice);
             switch (answer.infoChoice) {
-                case "View departments":
-                    viewDepartment();
+                case "Add departments":
+                    addDepartment();
                     break;
-                case "View roles":
-                    viewRoles();
+                case "Add roles":
+                    addRoles();
                     break;
-                case "View employees":
-                    viewEmployees();
+                case "Add employees":
+                    addEmployees();
                     break;
-            }
-            if (answer.viewMore) {
-                viewEmployeeInformation();
-            } else {
-                main.runSearch();
             }
 
         });
 }
 
-function viewDepartment() {
+function addRoles() {
+    inquirer.prompt([{
+        type: "input",
+        name: "addMore",
+        message: "What role?"
+    }]).then(answer => {
+        console.log("test");
+        main.connection.query("SELECT * FROM role WHERE ?", { department: answer.addMore }, function(err, res) {
+            console.log(answer.addMore);
+            inquirer.prompt({
+                name: "addMore",
+                type: "confirm",
+                message: "Would you like to add more?",
+            }).then(answer => {
+                if (answer.addMore) {
+                    addEmployeeInformation();
+                } else {
+                    main.runSearch();
+                }
+            })
+        });
+        console.log(answer.addMore);
+    });
+}
+
+function addDepartment() {
     inquirer.prompt({
         type: "input",
         name: "specificDepartment",
         message: "What department?"
     }).then(answer => {
-        connection.query("SELECT * FROM department WHERE ?", { department: answer.input }, function(err, res) {
-            console.log(answer.input);
+        main.query("SELECT * FROM department WHERE ?", { department: answer.specificDepartment }, function(err, res) {
+            console.log(answer.specificDepartment);
         });
-        console.log(answer.input);
+        console.log(answer.specificDepartment);
     });
 }
 
-function viewRoles() {
-    inquirer.prompt({
-        type: "input",
-        name: "specificRole",
-        message: "What role?"
-    }).then(answer => {
-        connection.query("SELECT * FROM role WHERE ?", { department: answer.input }, function(err, res) {
-            console.log(answer.input);
-        });
-        console.log(answer.input);
-    });
-}
 
-function viewEmployees() {
+function addEmployees() {
     inquirer.prompt({
         type: "input",
         name: "specificEmployee",
         message: "What employee?"
     }).then(answer => {
-        connection.query("SELECT * FROM employee WHERE ?", { department: answer.input }, function(err, res) {
-            console.log(answer.input);
+        main.query("SELECT * FROM employee WHERE ?", { department: answer.specificEmployee }, function(err, res) {
+            console.log(answer.specificEmployee);
         });
-        console.log(answer.input);
+        console.log(answer.specificEmployee);
     });
 }
 
-module.exports.viewEmployeeInformation = viewEmployeeInformation;
-module.exports.viewDepartment = viewDepartment;
-module.exports.viewRoles = viewRoles;
-module.exports.viewEmployees = viewEmployees;
+module.exports.addEmployeeInformation = addEmployeeInformation;
+module.exports.addDepartment = addDepartment;
+module.exports.addRoles = addRoles;
+module.exports.addEmployees = addEmployees;

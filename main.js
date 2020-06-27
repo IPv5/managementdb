@@ -1,16 +1,15 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
-const viewing = require("./js/viewing");
+const view = require("./js/viewing");
+const add = require("./js/add");
+const del = require("./js/delete");
 
 const connection = mysql.createConnection({
     host: "localhost",
-
     // Your port; if not 3306
     port: 3306,
-
     // Your username
     user: "root",
-
     // Your password
     password: "rootpassword",
     database: "management_db"
@@ -20,7 +19,7 @@ connection.connect(function(err) {
     if (err) throw err;
     //Start prompt function here
     runSearch();
-})
+});
 
 function runSearch() {
     inquirer
@@ -31,21 +30,20 @@ function runSearch() {
             choices: [
                 "Add department, roles and employees",
                 "View departments, roles and employees",
-                "Update employee roles"
+                "Delete employee roles"
             ]
-        })
-        .then(function(answer) {
+        }).then(function(answer) {
             switch (answer.action) {
                 case "Add department, roles and employees":
-                    addEmployeeInformation();
+                    add.addEmployeeInformation();
                     break;
 
                 case "View departments, roles and employees":
-                    viewing.viewEmployeeInformation();
+                    view.viewEmployeeInformation();
                     break;
 
-                case "Update employee roles":
-                    updateEmployeeInfo();
+                case "Delete employee roles":
+                    del.delEmployeeInformation();
                     break;
             }
         });
@@ -162,3 +160,4 @@ function songAndAlbumSearch() {
 
 
 module.exports.runSearch = runSearch;
+module.exports.connection = connection;
