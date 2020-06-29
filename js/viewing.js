@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const main = require("../main");
+const server = require("../server");
 
 function addEmployeeInformation() {
     inquirer
@@ -37,7 +38,7 @@ function addRoles() {
         message: "What role?"
     }]).then(answer => {
         console.log("test");
-        main.connection.query("SELECT * FROM role WHERE ?", { department: answer.addMore }, function(err, res) {
+        server.connection.query("SELECT * FROM role WHERE ?", { department: answer.addMore }, function(err, res) {
             console.log(answer.addMore);
             inquirer.prompt({
                 name: "addMore",
@@ -61,7 +62,7 @@ function addDepartment() {
         name: "specificDepartment",
         message: "What department?"
     }).then(answer => {
-        main.query("SELECT * FROM department WHERE ?", { department: answer.specificDepartment }, function(err, res) {
+        server.query("SELECT * FROM department WHERE ?", { department: answer.specificDepartment }, function(err, res) {
             console.log(answer.specificDepartment);
         });
         console.log(answer.specificDepartment);
@@ -75,7 +76,7 @@ function addEmployees() {
         name: "specificEmployee",
         message: "What employee?"
     }).then(answer => {
-        main.query("SELECT * FROM employee WHERE ?", { department: answer.specificEmployee }, function(err, res) {
+        serverr.query("SELECT * FROM employee WHERE ?", { department: answer.specificEmployee }, function(err, res) {
             console.log(answer.specificEmployee);
         });
         console.log(answer.specificEmployee);

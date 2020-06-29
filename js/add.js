@@ -26,32 +26,32 @@ function addEmployeeInformation() {
                     addEmployees();
                     break;
             }
-
         });
 }
 
 function addRoles() {
-    inquirer.prompt([{
+    inquirer.prompt({
         type: "input",
         name: "addMore",
         message: "What role?"
-    }]).then(answer => {
-        console.log("test");
-        connection.query("SELECT * FROM role WHERE ?", { department: answer.addMore }, function(err, res) {
-            console.log(answer.addMore);
-            inquirer.prompt({
-                name: "addMore",
-                type: "confirm",
-                message: "Would you like to add more?",
-            }).then(answer => {
-                if (answer.addMore) {
-                    addEmployeeInformation();
-                } else {
-                    main.runSearch();
-                }
-            })
+    }).then(answer => {
+        console.log("Printing addMore input here");
+        console.log(answer.addMore);
+        main.connection.query("INSERT INTO role (title) VALUES(?);", [answer.addMore], function(err, res) {
+            if (err) throw err;
+            console.log("Adding a role " + res.addMore);
         });
-        console.log(answer.input);
+        inquirer.prompt({
+            name: "addMore",
+            type: "confirm",
+            message: "Would you like to add more?",
+        }).then(answer => {
+            if (answer.addMore) {
+                addEmployeeInformation();
+            } else {
+                main.runSearch();
+            }
+        })
     });
 }
 
