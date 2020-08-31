@@ -112,7 +112,7 @@ function updateRole() {
                     console.table(empChoice);
                     return empChoice;
                 },
-                message: "Please select an employee to update"
+                message: "Please select an employee to update:"
             }
         ]).then(function (answer) {
             var chosenName;
@@ -153,12 +153,12 @@ function addRole() {
         {
             type: "input",
             name: "new_salary",
-            message: "What's the salary for the new role?"
+            message: "What's the salary for the role?"
         },
         {
             type: "input",
             name: "new_deptID",
-            message: "What is the department ID for the new role?"
+            message: "What is the department ID for the role?"
         }
     ]).then(function (answer) {
         connection.query("INSERT INTO role SET ?",
@@ -181,22 +181,22 @@ function addEmployee() {
         {
             name: "first_name",
             type: "input",
-            message: "What is the employee's first name."
+            message: "What is the employee's first name?"
         },
         {
             name: "last_name",
             type: "input",
-            message: "What is the employee's last name."
+            message: "What is the employee's last name?"
         },
         {
             name: "role_id",
             type: "input",
-            message: "What is the employee's role ID."
+            message: "What is the employee's ID?"
         },
         {
             name: "manager_id",
             type: "input",
-            message: "What is the employee's manager's ID number. if no manager please enter '0'.",
+            message: "What is the employee's manager's ID? If no manager please enter '0'.",
             default: null
         }
     ]).then(function (answers) {
@@ -215,12 +215,12 @@ function addEmployee() {
                     {
                         name: "title",
                         type: "input",
-                        message: "What is the employee's title."
+                        message: "What is the employee's title?"
                     },
                     {
                         name: "salary",
                         type: "input",
-                        message: "What is the employee's salary."
+                        message: "What is the employee's salary?"
                     }
                 ]).then(function (answers) {
                     connection.query(
@@ -247,7 +247,7 @@ function addDepartment() {
     inquirer.prompt({
         type: "input",
         name: "new_department",
-        message: "What is the new department name."
+        message: "What is the new department name?"
     }).then(function (answer) {
         connection.query("INSERT INTO department SET ?",
             {
